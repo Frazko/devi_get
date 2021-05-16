@@ -3,8 +3,6 @@ package com.frazko.minesweeper.requestObjects;
 import lombok.Data;
 
 @Data
-public class SelectCellRequest {
+public class RestartGameRequest {
 	private String id;
-	private int x;
-	private int y;
 }

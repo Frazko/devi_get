@@ -1,87 +1,100 @@
 package com.frazko.minesweeper.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.util.Assert;
 
-import lombok.Builder;
 import lombok.Data;
-
 
 @Document
 @Data
 public class MineSweeperGame {
 
-  @Id
-  private String id;
-  
-  private Board board;
+	@Id
+	private String id;
 
-  public MineSweeperGame(int rows, int cols, int minesCount) {
-    this.board = new Board(rows, cols);
-    setMinesRandomly(minesCount);
-  }
+	private Board board;
 
-  private void setMinesRandomly(int minesCount) {
-    List<Cell> shuffleList = new ArrayList<Cell>(board.getCells());
-    Collections.shuffle(shuffleList);
-    shuffleList.stream().limit(minesCount).forEach(x -> x.setMine(true));
-  }
+	private int minesCount;
 
-  public boolean isWon() {
-    return gameIsCompleted();
-  }
+	public void init(int rows, int cols, int minesCount) {
+		this.board = new Board(rows, cols);
+		this.setMinesCount(minesCount);
+		setRandomMines(minesCount);
+	}
 
-  public boolean isLost() {
-    return board.getCells().stream().anyMatch(cell -> cell.isRevealed() && cell.isMine());
-  }
+	public void restart() {
+		this.init(board.getRows(), board.getCols(), getMinesCount());
+	}
 
-  public boolean isOver() {
-    return isWon() || isLost();
-  }
+	private void setRandomMines(int minesCount) {
+		int minesSetCounter = 0;
 
-  public void toggleFlag(Cell cell) {
-    Assert.isTrue(!isOver() && !cell.isRevealed(), "");
-    cell.toggleFlag();
-  }
+		do {
+			pullRandomCell(board.getCells()).setMine(true);
+			minesSetCounter++;
+		} while (minesSetCounter <= minesCount);
 
-  public void revealCell(int row, int col) {
-    this.revealCell(this.board.getCell(row, col));
-  }
+		board.countMines();
+	}
 
-  public void revealCell(Cell cell) {
-    if (isOver() || cell.isFlagged()) {
-      return;
-    }
-    this.findNeighbors(cell);
-  }
+	public Cell pullRandomCell(List<Cell> list) {
+		Random random = new Random();
+		int size = board.getCells().size();
+		int index = random.nextInt(size);
+		return board.getCells().get(index);
+	}
 
-  private void findNeighbors(Cell cell) {
-    cell.setRevealed(true);
+	public boolean isWon() {
+		return gameIsCompleted();
+	}
 
-    List<Cell> neighbors = board.getNeighbors(cell);
+	public boolean isLost() {
+		return board.getCells().stream().anyMatch(cell -> cell.isRevealed() && cell.isMine());
+	}
 
-    /*
-     * If there game is still on and there are no mines next to the opened square,
-     * the neighbors are also opened recursively.
-     */
-    if (!isOver() && !neighbors.stream().anyMatch(s -> s.isMine())) {
-      neighbors.stream().filter(s -> !s.isRevealed() && !s.isFlagged()).forEach(s -> findNeighbors(s));
-    }
-  }
+	public boolean isOver() {
+		return isWon() || isLost();
+	}
 
-  /**
-   * Returns true if the game is over or if there are no squares without mines
-   * left to open.
-   * 
-   * @return true if the game is over
-   */
-  private boolean gameIsCompleted() {
-    return !board.getCells().stream().anyMatch(square -> !square.isRevealed() && !square.isMine());
-  }
+	public void toggleFlag(int row, int col) {
+		this.toggleFlag(this.board.getCell(row, col));
+	}
+
+	private void toggleFlag(Cell cell) {
+		if (!isOver() && !cell.isRevealed()) {
+			cell.toggleFlag();
+		}
+	}
+
+	public void selectCell(int row, int col) {
+		Cell cell = this.board.getCell(row, col);
+		if (!isOver() && !cell.isRevealed()) {
+			this.revealCell(cell);
+		}
+	}
+
+	private void revealCell(Cell cell) {
+		if (isOver() || cell.isFlagged()) {
+			return;
+		}
+		this.findNeighborCells(cell);
+	}
+
+	private void findNeighborCells(Cell cell) {
+		cell.setRevealed(true);
+		List<Cell> neighbors = board.getNeighbors(cell);
+
+		if (!isOver() && !neighbors.stream().anyMatch(s -> s.isMine())) {
+			neighbors.stream().filter(neighbor -> !neighbor.isRevealed() && !neighbor.isFlagged())
+					.forEach(neighbor -> findNeighborCells(neighbor));
+		}
+	}
+
+	private boolean gameIsCompleted() {
+		return !board.getCells().stream().anyMatch(cell -> !cell.isRevealed() && !cell.isMine());
+	}
 
 }
