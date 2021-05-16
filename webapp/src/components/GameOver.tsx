@@ -1,11 +1,28 @@
 import React from 'react'
+import YouLoseModal from './YouLoseModal';
+import styled from 'styled-components';
+import YouWinModal from './YouWinModal';
 
-const GameOver = () => {
+type GameOverType = {
+  won: boolean;
+  createNewGame: () => void;
+  restartGame: () => void;
+}
+
+const Wrapper = styled.div`
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  top: 115px;
+`;
+
+const GameOver: React.FC<GameOverType> = ({ won, createNewGame, restartGame }) => {
   return (
-    <div>
-      
-    </div>
+    <Wrapper>
+      {won && <YouWinModal createNewGame={createNewGame} restartGame={restartGame} />}
+      {!won && <YouLoseModal createNewGame={createNewGame} restartGame={restartGame} />}
+    </Wrapper>
   )
 }
 
-export default GameOver
+export default React.memo(GameOver)

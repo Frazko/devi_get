@@ -10,11 +10,13 @@ const GET_GAME_INFO = 'minesweeper/GET_GAME_INFO';
 const RESTART_GAME = 'minesweeper/RESTART_GAME';
 const UPDATE_SUCCESS = 'minesweeper/UPDATE_SUCCESS';
 
-const RESTART_TIMER = 'minesweeper/RESTART_TIMER';
+const SET_TIMER = 'minesweeper/SET_TIMER';
+const START_TIMER = 'minesweeper/START_TIMER';
 const STOP_TIMER = 'minesweeper/STOP_TIMER';
+const CLEAR_TIMER = 'minesweeper/CLEAR_TIMER';
 
 const initialState = {
-  id:null,
+  id: null,
   loading: false,
   error: false,
   cells: [],
@@ -26,7 +28,9 @@ const initialState = {
     cols:0,
     rows:0,
     mines:0,
-  }
+  },
+  timer: 0,
+  isTimerOn: false,
 }
 
 const minesweeperReducer = (state = initialState, action: any) => {
@@ -62,6 +66,31 @@ const minesweeperReducer = (state = initialState, action: any) => {
         ...state,
         loading: true,
       };
+    case SET_TIMER:
+      console.log('SET_TIMER: ', SET_TIMER);
+      return {
+        ...state,
+        timer: action.payload,
+      };
+    case START_TIMER:
+      console.log('START_TIMER: ', START_TIMER);
+      return {
+        ...state,
+        timer: 0,
+        isTimerOn: true,
+      };
+    case STOP_TIMER:
+      console.log('STOP_TIMER: ', STOP_TIMER);
+      return {
+        ...state,
+        isTimerOn: false,
+      };
+    case CLEAR_TIMER:
+      console.log('CLEAR_TIMER: ', CLEAR_TIMER);
+      return {
+        ...state,
+        timer: 0,
+      };
 
     default:
       return {
@@ -69,6 +98,24 @@ const minesweeperReducer = (state = initialState, action: any) => {
       };
   }
 }
+
+
+export const setTimerActionCreator = (time: number) => ({
+  type: SET_TIMER,
+  payload: time
+});
+
+export const startTimerActionCreator = () => ({
+  type: START_TIMER,
+});
+
+export const stopTimerActionCreator = () => ({
+  type: STOP_TIMER,
+});
+
+export const clearTimerActionCreator = () => ({
+  type: CLEAR_TIMER,
+});
 
 export const createGameActionCreator = (
   gameDetails: any,
@@ -78,6 +125,9 @@ export const createGameActionCreator = (
 }) => void) => {
   dispatch({
     type: CREATE_GAME
+  });
+  dispatch({
+    type: START_TIMER
   });
   const result = await axios.post(CREATE_GAME_URL, JSON.stringify(gameDetails));
   console.log('result: ', result);
@@ -128,6 +178,9 @@ export const restartGameActionCreator = (
 }) => void) => {
   dispatch({
     type: RESTART_GAME
+  });
+  dispatch({
+    type: START_TIMER
   });
   const result = await axios.post(RESTART_GAME_URL, JSON.stringify({id}));
   dispatch({

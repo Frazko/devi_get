@@ -7,14 +7,30 @@ import { CellType } from '../types/CellType';
 const Cell: React.FC<CellType> = ({
   index,
   value,
-  xpos,
-  ypos,
+  xpos:x,
+  ypos:y,
   flagged,
   mine,
   revealed,
   onCellSelected,
+  onCellFlagged,
   gameOver,
 }) => {
+
+  const untouchedPattern = (x: number, y: number) => {
+    if ((x % 2 === 0 && y % 2 !== 0) || (x % 2 !== 0 && y % 2 === 0)) {
+      return "#a2d249";
+    } else {
+      return "#aad751";
+    }
+  };
+  const revealedPattern = (x: number, y: number) => {
+    if ((x % 2 === 0 && y % 2 !== 0) || (x % 2 !== 0 && y % 2 === 0)) {
+      return "#d7b899";
+    } else {
+      return "#e5c29f";
+    }
+  };
 
   const StyledCell = styled.div`
     width: ${CELL_SIZE}px;
@@ -25,9 +41,9 @@ const Cell: React.FC<CellType> = ({
     justify-content: center;
     margin: 15px;
     position: absolute;
-    left: ${ypos * CELL_SIZE}px;
-    top: ${xpos * CELL_SIZE}px;
-    background: ${(index + xpos) % 2 === 0 ? "#A2D049" : "#AAD751"};
+    left: ${y * CELL_SIZE}px;
+    top: ${x * CELL_SIZE}px;
+    background: ${ revealed || (mine && gameOver) ? revealedPattern(x, y) : untouchedPattern(x, y)};
   `;
 
   const selectCell = (x: number, y: number) => {
@@ -43,22 +59,36 @@ const Cell: React.FC<CellType> = ({
     }
   };
 
+  const flagCell = (e: any, x: number, y: number) => {
+    e.preventDefault();
+    console.log('Flagged on', x, y);
+
+    const cell = {
+      x,
+      y,
+      id: null,
+    }
+    if (onCellFlagged) {
+      onCellFlagged(cell);
+    }
+  };
+
   return (
     <StyledCell
-      onClick={() => selectCell(xpos, ypos)}
+      onClick={() => selectCell(x, y)}
+      onContextMenu={(e) => flagCell(e, x, y)}
     >
-      {/* {mine && (<span>
-        💣
-      </span>)} */}
-
       {!mine && revealed && !!value && value}
 
       {revealed && mine && (<span>
         💣
       </span>)}
 
+      {flagged && (<span>
+        🚩
+      </span>)}
 
-      {gameOver && mine && (<span>
+      {gameOver && !revealed && mine && (<span>
         💣
       </span>)}
 

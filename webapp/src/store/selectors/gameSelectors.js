@@ -2,7 +2,17 @@ import { createSelector } from 'reselect';
 
 export const minesweeper = state => state.minesweeperReducer || {};
 
-export const cellsSelector = createSelector(
+export const gameSelector = createSelector(
   minesweeper,
   game => game || {}
+);
+
+export const timerSelector = createSelector(
+  minesweeper,
+  game => game.timer
+);
+
+export const isTimerOnSelector = createSelector(
+  minesweeper,
+  game => game.isTimerOn
 );

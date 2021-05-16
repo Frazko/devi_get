@@ -8,5 +8,7 @@ export type CellType = {
   revealed: boolean;
   //@ts-ignore
   onCellSelected?: ({x, y, id}) => void;
+  //@ts-ignore
+  onCellFlagged?: ({x, y, id}) => void;
   gameOver?: boolean;
 };
