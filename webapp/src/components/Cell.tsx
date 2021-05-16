@@ -1,18 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import { CELL_SIZE } from 'utils/constants';
+import { CellType } from '../types/CellType';
 
 
-type TypeCell = {
-  index: number;
-  value: number;
-  xpos: number;
-  ypos: number;
-  flagged: boolean;
-  mine: boolean;
-  revealed: boolean;
-};
-
-const Cell: React.FC<TypeCell> = ({
+const Cell: React.FC<CellType> = ({
   index,
   value,
   xpos,
@@ -20,31 +12,55 @@ const Cell: React.FC<TypeCell> = ({
   flagged,
   mine,
   revealed,
+  onCellSelected,
+  gameOver,
 }) => {
 
   const StyledCell = styled.div`
-    width: 40px;
-    height: 40px;
-
+    width: ${CELL_SIZE}px;
+    height: ${CELL_SIZE}px;
     background-color: beige;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin:15px;
+    margin: 15px;
     position: absolute;
-    left: ${xpos * 40}px;
-    top: ${ypos * 40}px;
-    background: ${(index + xpos) % 2 === 0 ? "#A2D049" : "#AAD751"}
+    left: ${ypos * CELL_SIZE}px;
+    top: ${xpos * CELL_SIZE}px;
+    background: ${(index + xpos) % 2 === 0 ? "#A2D049" : "#AAD751"};
   `;
 
   const selectCell = (x: number, y: number) => {
     console.log('Clicked on', x, y);
+
+    const cell = {
+      x,
+      y,
+      id: null,
+    }
+    if (onCellSelected) {
+      onCellSelected(cell);
+    }
   };
 
   return (
     <StyledCell
       onClick={() => selectCell(xpos, ypos)}
     >
+      {/* {mine && (<span>
+        💣
+      </span>)} */}
+
+      {!mine && revealed && !!value && value}
+
+      {revealed && mine && (<span>
+        💣
+      </span>)}
+
+
+      {gameOver && mine && (<span>
+        💣
+      </span>)}
 
     </StyledCell>
   )
