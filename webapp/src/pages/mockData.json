@@ -1,0 +1,141 @@
+{
+  "id": "60a0e571b6da9a6e26ae3fdc",
+  "board": {
+      "rows": 4,
+      "cols": 4,
+      "cells": [
+          {
+              "value": 3,
+              "xpos": 0,
+              "ypos": 0,
+              "flagged": false,
+              "mine": false,
+              "revealed": false
+          },
+          {
+              "value": 0,
+              "xpos": 0,
+              "ypos": 1,
+              "flagged": false,
+              "mine": true,
+              "revealed": false
+          },
+          {
+              "value": 3,
+              "xpos": 0,
+              "ypos": 2,
+              "flagged": false,
+              "mine": false,
+              "revealed": false
+          },
+          {
+              "value": 1,
+              "xpos": 0,
+              "ypos": 3,
+              "flagged": false,
+              "mine": false,
+              "revealed": false
+          },
+          {
+              "value": 0,
+              "xpos": 1,
+              "ypos": 0,
+              "flagged": false,
+              "mine": true,
+              "revealed": false
+          },
+          {
+              "value": 0,
+              "xpos": 1,
+              "ypos": 1,
+              "flagged": false,
+              "mine": true,
+              "revealed": false
+          },
+          {
+              "value": 5,
+              "xpos": 1,
+              "ypos": 2,
+              "flagged": false,
+              "mine": false,
+              "revealed": false
+          },
+          {
+              "value": 0,
+              "xpos": 1,
+              "ypos": 3,
+              "flagged": false,
+              "mine": true,
+              "revealed": false
+          },
+          {
+              "value": 0,
+              "xpos": 2,
+              "ypos": 0,
+              "flagged": false,
+              "mine": true,
+              "revealed": false
+          },
+          {
+              "value": 0,
+              "xpos": 2,
+              "ypos": 1,
+              "flagged": false,
+              "mine": true,
+              "revealed": false
+          },
+          {
+              "value": 0,
+              "xpos": 2,
+              "ypos": 2,
+              "flagged": false,
+              "mine": true,
+              "revealed": false
+          },
+          {
+              "value": 2,
+              "xpos": 2,
+              "ypos": 3,
+              "flagged": false,
+              "mine": false,
+              "revealed": false
+          },
+          {
+              "value": 0,
+              "xpos": 3,
+              "ypos": 0,
+              "flagged": true,
+              "mine": true,
+              "revealed": false
+          },
+          {
+              "value": 4,
+              "xpos": 3,
+              "ypos": 1,
+              "flagged": false,
+              "mine": false,
+              "revealed": false
+          },
+          {
+              "value": 2,
+              "xpos": 3,
+              "ypos": 2,
+              "flagged": false,
+              "mine": false,
+              "revealed": false
+          },
+          {
+              "value": 1,
+              "xpos": 3,
+              "ypos": 3,
+              "flagged": false,
+              "mine": false,
+              "revealed": true
+          }
+      ]
+  },
+  "minesCount": 8,
+  "won": false,
+  "lost": false,
+  "over": false
+}
