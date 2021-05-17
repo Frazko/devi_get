@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
+import styled from 'styled-components'
 
 import Cell from '../components/Cell';
-
-import styled from 'styled-components'
 import BoardHeader from '../components/BoardHeader';
-import { createGameActionCreator, getGameInfoActionCreator, restartGameActionCreator, selectCellActionCreator, stopTimerActionCreator, flagCellActionCreator } from '../store/reducers/minesweeperReducer';
+import { getGameInfoActionCreator, restartGameActionCreator, selectCellActionCreator, stopTimerActionCreator, flagCellActionCreator } from '../store/reducers/minesweeperReducer';
 import { gameSelector } from '../store/selectors/gameSelectors';
 import { CELL_SIZE, CELL_MARGIN } from 'utils/constants';
 import { CellType } from '../types/CellType';
@@ -16,37 +15,29 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const StyledActions = styled.div`
-display: flex;
-justify-content: center;
-`;
-
 const StyledBoard = styled.div`
   display: flex;
   justify-content: center;
   margin: 20px;
 `;
 
-const StyledButton = styled.div`
-  width: 150px;
-  border-radius: 6px;
-  border: 0.5px solid gray;
-  padding: 4px;
-  cursor: pointer;
+const StyledGrid = styled.div`
+  background-color: black;
   display: flex;
   justify-content: center;
-  background-color: lightblue;
-  margin: 10px;
+  position: relative;
+  border-radius: 10px;
 `;
 
-const Board = () => {
 
+const Board = () => {
   const {
     id,
     won,
     lost,
     over,
     board,
+    loading,
   } = useSelector(gameSelector);
 
   const dispatch = useDispatch();
@@ -56,32 +47,10 @@ const Board = () => {
     if (over) {
       dispatch(stopTimerActionCreator())
     }
-  }, [over])
-
-  const StyledGrid = styled.div`
-    width: ${board.rows * CELL_SIZE + CELL_MARGIN}px;
-    height: ${board.cols * CELL_SIZE + CELL_MARGIN}px;
-    background-color: black;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    border-radius:10px;
-    cursor: ${over ? 'not-allowed' : 'pointer'};
-  `;
+  }, [over, dispatch])
 
   const handleCreate = () => {
-    // redirect to home
-    history.push("/home");
-    // const gameDetails = {
-    //   rows: 5,
-    //   cols: 5,
-    //   mines: 5,
-    // }
-    // dispatch(createGameActionCreator(gameDetails))
-  }
-
-  const handleGetGame = () => {
-    dispatch(getGameInfoActionCreator('60a15b26a219d510eef3eaa1'))
+    history.push("/");
   }
 
   const handleRestart = () => {
@@ -100,28 +69,43 @@ const Board = () => {
     dispatch(flagCellActionCreator(selectedCell))
   }
 
+  useEffect(() => {
+    const lastSessionId = localStorage.getItem('minesweeper_lastGameId');
+    if (lastSessionId != null && !loading) {
+      console.log('LOADING STORAGE lastSessionId: ', lastSessionId);
+      dispatch(getGameInfoActionCreator(lastSessionId))
+    }
+  }, [dispatch, loading])
+
+  useEffect(() => {
+    localStorage.setItem('minesweeper_lastGameId', id);
+  }, [board.cells, id])
+
+  // Could have used hooks to clean this component and make it smaller. no time..
+  // I noticed it does not work whe the board is asymmetric :(
+
+console.log('board');
   const renderGrid = () => {
     return board.cells && board.cells.map((cell: CellType, index: number) => <Cell key={index} {...cell} index={index} onCellSelected={handleCellSelected} onCellFlagged={handleCellFlagged} gameOver={over} />)
   }
-
   return (
     <Wrapper>
-      <BoardHeader />
+      <BoardHeader over={over} />
       {over && <GameOver won={won} createNewGame={handleCreate} restartGame={handleRestart} />}
       <StyledBoard className={over && lost ? 'youLose' : ''}>
-        <StyledGrid>
+        <StyledGrid
+          style={{
+            width: board.rows * CELL_SIZE + CELL_MARGIN,
+            height: board.cols * CELL_SIZE + CELL_MARGIN,
+            cursor:over ? 'not-allowed' : 'pointer',
+          }}
+        >
           {renderGrid()}
         </StyledGrid>
       </StyledBoard>
-
-      <StyledActions>
-        <StyledButton
-          onClick={handleGetGame}
-        >
-          Pull Game by ID
-        </StyledButton>
-      </StyledActions>
-
+      <pre>
+        Click to Reveal, Right Click to Flag.
+      </pre>
     </Wrapper >
   )
 }

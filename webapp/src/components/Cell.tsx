@@ -4,6 +4,20 @@ import { CELL_SIZE } from 'utils/constants';
 import { CellType } from '../types/CellType';
 
 
+const StyledCell = styled.div`
+width: ${CELL_SIZE}px;
+height: ${CELL_SIZE}px;
+background-color: beige;
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 15px;
+position: absolute;
+`;
+/* left: ${x * CELL_SIZE}px;
+top: ${y * CELL_SIZE}px; 
+background: ${ revealed || (mine && gameOver) ? revealedPattern(x, y) : untouchedPattern(x, y)};*/
+
 const Cell: React.FC<CellType> = ({
   index,
   value,
@@ -32,19 +46,6 @@ const Cell: React.FC<CellType> = ({
     }
   };
 
-  const StyledCell = styled.div`
-    width: ${CELL_SIZE}px;
-    height: ${CELL_SIZE}px;
-    background-color: beige;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 15px;
-    position: absolute;
-    left: ${y * CELL_SIZE}px;
-    top: ${x * CELL_SIZE}px;
-    background: ${ revealed || (mine && gameOver) ? revealedPattern(x, y) : untouchedPattern(x, y)};
-  `;
 
   const selectCell = (x: number, y: number) => {
     console.log('Clicked on', x, y);
@@ -75,9 +76,24 @@ const Cell: React.FC<CellType> = ({
 
   return (
     <StyledCell
+      style={{
+        left: x * CELL_SIZE, 
+        top: y * CELL_SIZE,
+        background: revealed || (mine && gameOver) ? revealedPattern(x, y) : untouchedPattern(x, y),
+      }}
       onClick={() => selectCell(x, y)}
       onContextMenu={(e) => flagCell(e, x, y)}
     >
+
+      {/* 
+       showing where the mines are
+      {mine && (<span>
+        💣
+      </span>)} */}
+
+
+
+
       {!mine && revealed && !!value && value}
 
       {revealed && mine && (<span>
@@ -96,4 +112,4 @@ const Cell: React.FC<CellType> = ({
   )
 }
 
-export default Cell
+export default React.memo(Cell)

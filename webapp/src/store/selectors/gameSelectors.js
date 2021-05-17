@@ -7,11 +7,6 @@ export const gameSelector = createSelector(
   game => game || {}
 );
 
-export const timerSelector = createSelector(
-  minesweeper,
-  game => game.timer
-);
-
 export const isTimerOnSelector = createSelector(
   minesweeper,
   game => game.isTimerOn

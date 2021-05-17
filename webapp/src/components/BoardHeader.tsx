@@ -10,11 +10,16 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-const BoardHeader = () => {
+type HeaderType = {
+  over?: boolean;
+  hideClock?: boolean;
+}
+
+const BoardHeader: React.FC<HeaderType> = ({ over , hideClock}) => {
   return (
     <Wrapper>
       <h1>Deviget Minesweeper</h1>
-      <Timer />
+      {!hideClock && <Timer over={!!over} />}
     </Wrapper>
   )
 }

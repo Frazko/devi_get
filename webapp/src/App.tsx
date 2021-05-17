@@ -3,31 +3,32 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
+
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 
 import './App.css';
 import About from './pages/About';
 import Home from './pages/Home';
 import Board from './pages/Board';
 
+const linksStyle = {padding: '10px', margin: '10px'};
 function App() {
+
   return (
     <div className="App">
       <Router>
         <div>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/board">Board</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-          </ul>
-          <hr />
+          <Typography style={linksStyle} >
+            <Link href="/" style={linksStyle}>
+              Home
+            </Link>
+            <Link href="/about" style={linksStyle}>
+              About
+            </Link>
+          </Typography>
           <Switch>
             <Route exact path="/">
               <Home />

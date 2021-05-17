@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 
-import useInterval from '../hooks/useInterval';
 import styled from 'styled-components'
-
-import { isTimerOnSelector, timerSelector } from 'store/selectors/gameSelectors';
-import { useSelector, useDispatch } from 'react-redux';
-import { setTimerActionCreator } from '../store/reducers/minesweeperReducer';
+import useTimer from '../hooks/useTimer';
 
 
 const Wrapper = styled.div`
@@ -15,15 +11,18 @@ const StyledClock = styled.span`
   padding-right: 10px;
 `;
 
-const Timer = () => {
-  const time = useSelector(timerSelector);
-  const timerIsOn = useSelector(isTimerOnSelector);
-    const dispatch = useDispatch();
+type TimerType = {
+  over: boolean
+}
 
-  useInterval(() => {
-    const newTime = time + 1;
-    dispatch(setTimerActionCreator(newTime));
-  }, timerIsOn);
+const Timer: React.FC<TimerType> = ({ over }) => {
+  const {time, setTime} = useTimer(over);
+  
+  useEffect(() => {
+    if (over) {
+      setTime(0);
+    }
+  }, [over])
 
   return (
     <Wrapper>

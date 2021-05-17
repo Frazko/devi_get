@@ -36,12 +36,13 @@ const initialState = {
 const minesweeperReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case CREATE_GAME:
+      console.log('CREATE_GAME: ');
       return {
         ...state,
         loading: true,
       };
     case UPDATE_SUCCESS:
-      console.log('UPDATE_SUCCESS: ', action.payload);
+      console.log('UPDATE_SUCCESS: ');
       return {
         ...state,
         ...action.payload,
@@ -59,7 +60,6 @@ const minesweeperReducer = (state = initialState, action: any) => {
     case GET_GAME_INFO:
       return {
         ...state,
-        loading: true,
       };
     case RESTART_GAME:
       return {
@@ -67,26 +67,26 @@ const minesweeperReducer = (state = initialState, action: any) => {
         loading: true,
       };
     case SET_TIMER:
-      console.log('SET_TIMER: ', SET_TIMER);
+      
       return {
         ...state,
         timer: action.payload,
       };
     case START_TIMER:
-      console.log('START_TIMER: ', START_TIMER);
+      
       return {
         ...state,
         timer: 0,
         isTimerOn: true,
       };
     case STOP_TIMER:
-      console.log('STOP_TIMER: ', STOP_TIMER);
+      
       return {
         ...state,
         isTimerOn: false,
       };
     case CLEAR_TIMER:
-      console.log('CLEAR_TIMER: ', CLEAR_TIMER);
+      
       return {
         ...state,
         timer: 0,
@@ -130,7 +130,7 @@ export const createGameActionCreator = (
     type: START_TIMER
   });
   const result = await axios.post(CREATE_GAME_URL, JSON.stringify(gameDetails));
-  console.log('result: ', result);
+  localStorage.setItem('minesweeper_lastGameId', '');
   dispatch({
     type: UPDATE_SUCCESS,
     payload: result.data
@@ -147,7 +147,7 @@ export const selectCellActionCreator = (
     type: SELECT_CELL
   });
   const result = await axios.post(SELECT_CELL_URL, JSON.stringify(cell));
-  console.log('result: ', result.data);
+  
   dispatch({
     type: UPDATE_SUCCESS,
     payload: result.data
@@ -197,6 +197,9 @@ export const getGameInfoActionCreator = (
 }) => void) => {
   dispatch({
     type: GET_GAME_INFO
+  });
+  dispatch({
+    type: START_TIMER
   });
   const result = await axios.get(`${GET_GAME_INFO_URL}/${id}`);
   dispatch({
