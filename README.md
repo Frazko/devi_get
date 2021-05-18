@@ -2,7 +2,11 @@
 
 # Spring Boot App
 [minesweeper-api](https://github.com/Frazko/deviget/tree/master/minesweeper-api) - you can see the services [here](https://minesweeper-api-frazko.herokuapp.com/swagger-ui.html#/mine-sweeper-controller)
-Hosted free on Heroku.
+Hosted free on Heroku. please awake the dynos before using the game with the front end.
+Uses:
+*Spring Boot
+*MongoDB and Atlas
+*Junit
 
 # React App
 Live version [here](https://deviget-webapp-frazko.herokuapp.com/)
