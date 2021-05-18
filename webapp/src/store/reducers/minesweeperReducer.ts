@@ -1,26 +1,27 @@
+import 'cross-fetch/polyfill'
 import axios from '../../utils/axiosConfig';
 import {
   CREATE_GAME_URL, GET_GAME_INFO_URL, RESTART_GAME_URL, SELECT_CELL_URL, TOGGLE_FLAG_CELL_URL
 } from '../../utils/apis';
 
-const CREATE_GAME = 'minesweeper/CREATE_GAME';
-const SELECT_CELL = 'minesweeper/SELECT_CELL';
-const TOGGLE_FLAG_CELL = 'minesweeper/TOGGLE_FLAG_CELL';
-const GET_GAME_INFO = 'minesweeper/GET_GAME_INFO';
-const RESTART_GAME = 'minesweeper/RESTART_GAME';
-const UPDATE_SUCCESS = 'minesweeper/UPDATE_SUCCESS';
+export const CREATE_GAME = 'minesweeper/CREATE_GAME';
+export const SELECT_CELL = 'minesweeper/SELECT_CELL';
+export const TOGGLE_FLAG_CELL = 'minesweeper/TOGGLE_FLAG_CELL';
+export const GET_GAME_INFO = 'minesweeper/GET_GAME_INFO';
+export const RESTART_GAME = 'minesweeper/RESTART_GAME';
+export const UPDATE_SUCCESS = 'minesweeper/UPDATE_SUCCESS';
 
-const SET_TIMER = 'minesweeper/SET_TIMER';
-const START_TIMER = 'minesweeper/START_TIMER';
-const STOP_TIMER = 'minesweeper/STOP_TIMER';
-const CLEAR_TIMER = 'minesweeper/CLEAR_TIMER';
+export const SET_TIMER = 'minesweeper/SET_TIMER';
+export const START_TIMER = 'minesweeper/START_TIMER';
+export const STOP_TIMER = 'minesweeper/STOP_TIMER';
+export const CLEAR_TIMER = 'minesweeper/CLEAR_TIMER';
 
 const initialState = {
   id: null,
   loading: false,
   error: false,
   cells: [],
-  minesCount: 5,
+  minesCount: 0,
   won: false,
   lost: false,
   over: false,
@@ -33,16 +34,15 @@ const initialState = {
   isTimerOn: false,
 }
 
-const minesweeperReducer = (state = initialState, action: any) => {
+const minesweeperReducer = (state:any = initialState, action: any) => {
   switch (action.type) {
     case CREATE_GAME:
-      console.log('CREATE_GAME: ');
       return {
         ...state,
         loading: true,
       };
+      
     case UPDATE_SUCCESS:
-      console.log('UPDATE_SUCCESS: ');
       return {
         ...state,
         ...action.payload,
@@ -98,7 +98,6 @@ const minesweeperReducer = (state = initialState, action: any) => {
       };
   }
 }
-
 
 export const setTimerActionCreator = (time: number) => ({
   type: SET_TIMER,

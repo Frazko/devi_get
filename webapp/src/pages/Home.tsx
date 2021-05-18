@@ -100,7 +100,7 @@ export default function Home() {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Create a Game first
+            Create a Game
           </Typography>
           <form className={classes.form} noValidate>
             <TextField
@@ -128,6 +128,7 @@ export default function Home() {
               Please fill all spaces
             </StyledAlert>}
             <Button
+              role="button"
               type="submit"
               fullWidth
               variant="contained"
