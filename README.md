@@ -1,4 +1,25 @@
-# minesweeper-API
+# Information
+
+# Spring Boot App
+[minesweeper-api](https://github.com/Frazko/deviget/tree/master/minesweeper-api) - you can see the services [here](https://minesweeper-api-frazko.herokuapp.com/swagger-ui.html#/mine-sweeper-controller)
+Hosted free on Heroku.
+
+# React App
+Live version [here](https://deviget-webapp-frazko.herokuapp.com/)
+Created with Create React App. and uses:
+* ReactJs
+* Redux
+* Thunks
+* Typescript
+* Styled Components
+* Material UI
+* Testing Library and Jest
+
+## Time Spent
+3 days
+
+
+# Requirements:
 API test
 
 We ask that you complete the following challenge to evaluate your development skills. Please use the programming language and framework discussed during your interview to accomplish the following task.
