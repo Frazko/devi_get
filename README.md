@@ -6,6 +6,7 @@ Hosted free on Heroku. please awake the dynos before using the game with the fro
 Uses:
 *Spring Boot
 *MongoDB and Atlas
+*Swagger UI
 *Junit
 
 # React App
