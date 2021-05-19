@@ -14,6 +14,7 @@ Live version [here](https://deviget-webapp-frazko.herokuapp.com/)
 Created with Create React App. and uses:
 * ReactJs
 * Redux
+* Typescript
 * Thunks
 * Typescript
 * Styled Components
