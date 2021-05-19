@@ -16,7 +16,7 @@ Created with Create React App. and uses:
 * Redux
 * Typescript
 * Thunks
-* Typescript
+* Axios
 * Styled Components
 * Material UI
 * Testing Library and Jest
